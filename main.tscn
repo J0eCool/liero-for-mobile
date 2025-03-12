@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://er8kqhw88a1b"]
+
+[ext_resource type="Texture2D" uid="uid://btvp6t1upgyd7" path="res://worm.png" id="1_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://xlbrttmjbnmu" path="res://gun.png" id="2_h2yge"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Worm" type="Sprite2D" parent="."]
+position = Vector2(215, 118)
+texture = ExtResource("1_0xm2m")
+
+[node name="Gun" type="Sprite2D" parent="Worm"]
+rotation = 0.10472
+texture = ExtResource("2_h2yge")

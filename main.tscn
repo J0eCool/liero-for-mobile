@@ -1,14 +1,113 @@
-[gd_scene load_steps=3 format=3 uid="uid://er8kqhw88a1b"]
+[gd_scene load_steps=6 format=3 uid="uid://er8kqhw88a1b"]
 
 [ext_resource type="Texture2D" uid="uid://btvp6t1upgyd7" path="res://worm.png" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://ban5u0np31ibm" path="res://Worm.cs" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://xlbrttmjbnmu" path="res://gun.png" id="2_h2yge"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0xm2m"]
+radius = 23.0
+height = 82.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h2yge"]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Worm" type="Sprite2D" parent="."]
-position = Vector2(215, 118)
+[node name="Worm" type="CharacterBody2D" parent="."]
+position = Vector2(572, 486)
+script = ExtResource("1_h2yge")
+Gravity = 1800.0
+Speeds = 225.0
+JumpHeight = 180.0
+
+[node name="Sprite" type="Sprite2D" parent="Worm"]
 texture = ExtResource("1_0xm2m")
 
-[node name="Gun" type="Sprite2D" parent="Worm"]
+[node name="Gun" type="Sprite2D" parent="Worm/Sprite"]
 rotation = 0.10472
 texture = ExtResource("2_h2yge")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Worm"]
+position = Vector2(6, 0)
+shape = SubResource("CapsuleShape2D_0xm2m")
+
+[node name="Level Geometry" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Level Geometry"]
+position = Vector2(574, 619)
+scale = Vector2(46.32, 2.68)
+
+[node name="ColorRect" type="ColorRect" parent="Level Geometry/StaticBody2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level Geometry/StaticBody2D"]
+shape = SubResource("RectangleShape2D_h2yge")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Level Geometry"]
+position = Vector2(171, 546)
+scale = Vector2(5.70588, 4.58665)
+
+[node name="ColorRect" type="ColorRect" parent="Level Geometry/StaticBody2D2"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level Geometry/StaticBody2D2"]
+shape = SubResource("RectangleShape2D_h2yge")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="Level Geometry"]
+position = Vector2(1091, 300)
+scale = Vector2(5.70588, 34.7467)
+
+[node name="ColorRect" type="ColorRect" parent="Level Geometry/StaticBody2D3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level Geometry/StaticBody2D3"]
+shape = SubResource("RectangleShape2D_h2yge")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="Level Geometry"]
+position = Vector2(57, 315)
+scale = Vector2(5.70588, 33.1867)
+
+[node name="ColorRect" type="ColorRect" parent="Level Geometry/StaticBody2D4"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level Geometry/StaticBody2D4"]
+shape = SubResource("RectangleShape2D_h2yge")

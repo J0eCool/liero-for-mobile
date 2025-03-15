@@ -32,6 +32,12 @@ public partial class Worm : CharacterBody2D {
             }
         }
 
+        if (vel.X < 0) {
+            // flip the sprite turnways
+        } else if (vel.X > 0) {
+            // flipt it normdmal
+        }
+
         Velocity = vel;
         MoveAndSlide();
     }

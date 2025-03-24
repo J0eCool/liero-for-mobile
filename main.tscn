@@ -1,34 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://er8kqhw88a1b"]
+[gd_scene load_steps=3 format=3 uid="uid://er8kqhw88a1b"]
 
-[ext_resource type="Texture2D" uid="uid://btvp6t1upgyd7" path="res://worm.png" id="1_0xm2m"]
-[ext_resource type="Script" uid="uid://ban5u0np31ibm" path="res://Worm.cs" id="1_h2yge"]
-[ext_resource type="Texture2D" uid="uid://xlbrttmjbnmu" path="res://gun.png" id="2_h2yge"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0xm2m"]
-radius = 23.0
-height = 82.0
+[ext_resource type="PackedScene" uid="uid://bemwchscv2eks" path="res://worm.tscn" id="1_ig7tw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h2yge"]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Worm" type="CharacterBody2D" parent="."]
+[node name="Worm" parent="." instance=ExtResource("1_ig7tw")]
 position = Vector2(572, 486)
-script = ExtResource("1_h2yge")
-Gravity = 1800.0
-Speeds = 225.0
-JumpHeight = 180.0
-
-[node name="Sprite" type="Sprite2D" parent="Worm"]
-texture = ExtResource("1_0xm2m")
-
-[node name="Gun" type="Sprite2D" parent="Worm/Sprite"]
-rotation = 0.10472
-texture = ExtResource("2_h2yge")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Worm"]
-position = Vector2(6, 0)
-shape = SubResource("CapsuleShape2D_0xm2m")
 
 [node name="Level Geometry" type="Node2D" parent="."]
 

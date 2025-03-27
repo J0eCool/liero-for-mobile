@@ -3,11 +3,11 @@ using Godot;
 public partial class Worm : CharacterBody2D
 {
     private float _aimAngle;
-
-    private Sprite2D _body;
-    private Sprite2D _gun;
-    private Sprite2D _reticle;
     private float _reticleDist;
+
+    [Export] public Sprite2D BodySprite;
+    [Export] public Sprite2D GunSprite;
+    [Export] public Sprite2D ReticleSprite;
 
     [Export] public float MoveSpeed = 100.0f;
     [Export] public float AimSpeed = 250.0f; // in degrees/s
@@ -16,10 +16,7 @@ public partial class Worm : CharacterBody2D
 
     public override void _Ready()
     {
-        _body = FindChild("Body") as Sprite2D;
-        _gun = FindChild("Gun") as Sprite2D;
-        _reticle = FindChild("Reticle") as Sprite2D;
-        _reticleDist = _reticle.Position.Length();
+        _reticleDist = ReticleSprite.Position.Length();
     }
 
     public override void _Process(double deltaT)
@@ -32,27 +29,21 @@ public partial class Worm : CharacterBody2D
         var vel = Velocity;
         vel.X = 0;
 
-        // Handle H input 
-        if (Input.IsActionPressed("left"))
-        {
-            vel.X -= MoveSpeed;
-        }
-
-        if (Input.IsActionPressed("right"))
-        {
-            vel.X += MoveSpeed;
-        }
+        // Handle H input
+        vel.X = MoveSpeed * Input.GetAxis("left", "right");
 
         // Jump 
         if (!IsOnFloor())
         {
             vel.Y += Gravity * dt;
+            // Reduce jump speed when releasing jump while rising
+            // allows for control over jump height by differentiating press vs press-and-hold
             if (vel.Y * Gravity < 0 && Input.IsActionJustReleased("jump"))
             {
                 vel.Y *= 1 / 3.0f;
             }
         }
-        else
+        else // is on floor
         {
             vel.Y = 0;
             if (Input.IsActionJustPressed("jump"))
@@ -62,13 +53,12 @@ public partial class Worm : CharacterBody2D
         }
 
         // Flip sprites
-        var isFlipped = _body.FlipH;
+        var isFlipped = BodySprite.FlipH;
         // explicitly not doing `isFlipped = vel.X < 0`, to maintain flip when not moving
         if (vel.X < 0) isFlipped = true;
         else if (vel.X > 0) isFlipped = false;
-
-        _body.FlipH = isFlipped;
-        _gun.FlipH = isFlipped;
+        BodySprite.FlipH = isFlipped;
+        GunSprite.FlipH = isFlipped;
 
         // Handle V input
         var dAim = Input.GetAxis("up", "down");
@@ -76,8 +66,7 @@ public partial class Worm : CharacterBody2D
         _aimAngle = Mathf.Clamp(_aimAngle, -85, 45);
         var rPos = _reticleDist * Vector2.FromAngle(_aimAngle * Mathf.Pi / 180);
         if (isFlipped) rPos.X *= -1;
-
-        _reticle.Position = rPos;
+        ReticleSprite.Position = rPos;
 
         // Ship it!!!!
         Velocity = vel;

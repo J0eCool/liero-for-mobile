@@ -2,7 +2,8 @@ using Godot;
 
 public partial class Worm : CharacterBody2D
 {
-    private float _aimAngle;
+    private bool _facingRight = true;
+    private float _aimAngle = 0.0f;
     private float _reticleDist;
 
     [Export] public Sprite2D BodySprite;
@@ -13,6 +14,9 @@ public partial class Worm : CharacterBody2D
     [Export] public float AimSpeed = 250.0f; // in degrees/s
     [Export] public float Gravity = 500.0f;
     [Export] public float JumpHeight = 250.0f;
+
+    [Export] public PackedScene BulletScene;
+    [Export] public float ShootSpeed = 1500.0f;
 
     public override void _Ready()
     {
@@ -53,23 +57,36 @@ public partial class Worm : CharacterBody2D
         }
 
         // Flip sprites
-        var isFlipped = BodySprite.FlipH;
         // explicitly not doing `isFlipped = vel.X < 0`, to maintain flip when not moving
-        if (vel.X < 0) isFlipped = true;
-        else if (vel.X > 0) isFlipped = false;
-        BodySprite.FlipH = isFlipped;
-        GunSprite.FlipH = isFlipped;
+        if (vel.X < 0) _facingRight = false;
+        else if (vel.X > 0) _facingRight = true;
+        BodySprite.FlipH = !_facingRight;
+        GunSprite.FlipH = !_facingRight;
 
         // Handle V input
         var dAim = Input.GetAxis("up", "down");
         _aimAngle += dt * dAim * AimSpeed;
-        _aimAngle = Mathf.Clamp(_aimAngle, -85, 45);
-        var rPos = _reticleDist * Vector2.FromAngle(_aimAngle * Mathf.Pi / 180);
-        if (isFlipped) rPos.X *= -1;
-        ReticleSprite.Position = rPos;
+        _aimAngle = Mathf.Clamp(_aimAngle, -90, 45);
+        ReticleSprite.Position = _reticleDist * AimingDir();
+        ;
 
         // Ship it!!!!
         Velocity = vel;
         MoveAndSlide();
+
+        if (Input.IsActionJustPressed("shoot"))
+        {
+            var bullet = BulletScene.Instantiate<RigidBody2D>();
+            bullet.Position = Position;
+            bullet.LinearVelocity = ShootSpeed * AimingDir();
+            GetTree().Root.AddChild(bullet);
+        }
+    }
+
+    private Vector2 AimingDir()
+    {
+        var ret = Vector2.FromAngle(_aimAngle * Mathf.Pi / 180);
+        if (!_facingRight) ret.X *= -1;
+        return ret;
     }
 }

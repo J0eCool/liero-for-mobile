@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1nr7383t5l6g"]
+
+[ext_resource type="Texture2D" uid="uid://7wbkb1bk7wp4" path="res://Sprites/CircleR12.png" id="1_v7oki"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v8qja"]
+radius = 12.0416
+
+[node name="Bullet" type="RigidBody2D"]
+collision_layer = 4
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_v8qja")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.999261, 0.89141, 0, 1)
+texture = ExtResource("1_v7oki")

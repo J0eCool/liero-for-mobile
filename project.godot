@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Liero for Mobile"
-run/main_scene="uid://er8kqhw88a1b"
+run/main_scene="uid://c3ye8o563rq65"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 

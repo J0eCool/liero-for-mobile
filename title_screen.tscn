@@ -1,0 +1,67 @@
+[gd_scene load_steps=6 format=3 uid="uid://c3ye8o563rq65"]
+
+[ext_resource type="Script" uid="uid://c44pb5pb8pjt6" path="res://TitleScreen.cs" id="1_v6p8y"]
+[ext_resource type="PackedScene" uid="uid://er8kqhw88a1b" path="res://main.tscn" id="2_ak2if"]
+
+[sub_resource type="SystemFont" id="SystemFont_06r0y"]
+font_names = PackedStringArray("Constantia")
+font_italic = true
+font_weight = 550
+
+[sub_resource type="LabelSettings" id="LabelSettings_y7k74"]
+font = SubResource("SystemFont_06r0y")
+font_size = 108
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_06r0y"]
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Title Screen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v6p8y")
+_gameScene = ExtResource("2_ak2if")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 35.0
+offset_right = 964.0
+offset_bottom = 256.0
+text = "LIERO but
+       AWESOMER"
+label_settings = SubResource("LabelSettings_y7k74")
+
+[node name="PlayerColor" type="ColorPickerButton" parent="."]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 363.0
+offset_right = 303.0
+offset_bottom = 419.0
+color = Color(0, 0.498039, 1, 1)
+
+[node name="Label" type="Label" parent="PlayerColor"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = -35.0
+offset_right = 115.0
+offset_bottom = 40.0
+text = "Player Color
+
+(click me)"
+label_settings = SubResource("LabelSettings_06r0y")
+horizontal_alignment = 1
+
+[node name="LocalPlay" type="Button" parent="."]
+layout_mode = 0
+offset_left = 454.0
+offset_top = 367.0
+offset_right = 573.0
+offset_bottom = 413.0
+text = "Local Play"

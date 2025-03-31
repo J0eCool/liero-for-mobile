@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://bemwchscv2eks"]
 
-[ext_resource type="Script" uid="uid://ban5u0np31ibm" path="res://Worm.cs" id="1_affe2"]
-[ext_resource type="PackedScene" uid="uid://c1nr7383t5l6g" path="res://bullet.tscn" id="2_jxdlp"]
+[ext_resource type="Script" uid="uid://ban5u0np31ibm" path="res://Scripts/Worm.cs" id="1_affe2"]
+[ext_resource type="PackedScene" uid="uid://c1nr7383t5l6g" path="res://Scenes/bullet.tscn" id="2_jxdlp"]
 [ext_resource type="Texture2D" uid="uid://btvp6t1upgyd7" path="res://Sprites/worm.png" id="2_rs7oq"]
 [ext_resource type="Texture2D" uid="uid://xlbrttmjbnmu" path="res://Sprites/gun.png" id="3_jxdlp"]
 [ext_resource type="Texture2D" uid="uid://7wbkb1bk7wp4" path="res://Sprites/CircleR12.png" id="4_rs7oq"]

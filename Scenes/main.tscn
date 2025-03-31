@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://er8kqhw88a1b"]
 
-[ext_resource type="PackedScene" uid="uid://bemwchscv2eks" path="res://worm.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://bemwchscv2eks" path="res://Scenes/worm.tscn" id="1_ig7tw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h2yge"]
 

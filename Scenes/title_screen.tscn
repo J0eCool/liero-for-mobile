@@ -1,12 +1,13 @@
 [gd_scene load_steps=6 format=3 uid="uid://c3ye8o563rq65"]
 
-[ext_resource type="Script" uid="uid://c44pb5pb8pjt6" path="res://TitleScreen.cs" id="1_v6p8y"]
-[ext_resource type="PackedScene" uid="uid://er8kqhw88a1b" path="res://main.tscn" id="2_ak2if"]
+[ext_resource type="Script" uid="uid://c44pb5pb8pjt6" path="res://Scripts/TitleScreen.cs" id="1_v6p8y"]
+[ext_resource type="PackedScene" uid="uid://er8kqhw88a1b" path="res://Scenes/main.tscn" id="2_ak2if"]
 
 [sub_resource type="SystemFont" id="SystemFont_06r0y"]
 font_names = PackedStringArray("Constantia")
 font_italic = true
 font_weight = 550
+subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_y7k74"]
 font = SubResource("SystemFont_06r0y")

@@ -9,6 +9,7 @@
 [node name="Worm" parent="." instance=ExtResource("1_ig7tw")]
 position = Vector2(572, 486)
 MoveSpeed = 255.0
+PlayerColor = Color(0, 1, 1, 1)
 
 [node name="Level Geometry" type="Node2D" parent="."]
 

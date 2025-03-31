@@ -18,9 +18,12 @@ public partial class Worm : CharacterBody2D
     [Export] public PackedScene BulletScene;
     [Export] public float ShootSpeed = 1500.0f;
 
+    [Export] public Color PlayerColor;
+
     public override void _Ready()
     {
         _reticleDist = ReticleSprite.Position.Length();
+        BodySprite.Modulate = PlayerColor;
     }
 
     public override void _Process(double deltaT)
@@ -68,7 +71,6 @@ public partial class Worm : CharacterBody2D
         _aimAngle += dt * dAim * AimSpeed;
         _aimAngle = Mathf.Clamp(_aimAngle, -90, 45);
         ReticleSprite.Position = _reticleDist * AimingDir();
-        ;
 
         // Ship it!!!!
         Velocity = vel;

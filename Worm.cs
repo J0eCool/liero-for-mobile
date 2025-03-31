@@ -18,12 +18,22 @@ public partial class Worm : CharacterBody2D
     [Export] public PackedScene BulletScene;
     [Export] public float ShootSpeed = 1500.0f;
 
-    [Export] public Color PlayerColor;
+    private Color _playerColor;
+
+    [Export]
+    public Color PlayerColor
+    {
+        get => _playerColor;
+        set
+        {
+            _playerColor = value;
+            BodySprite.Modulate = PlayerColor;
+        }
+    }
 
     public override void _Ready()
     {
         _reticleDist = ReticleSprite.Position.Length();
-        BodySprite.Modulate = PlayerColor;
     }
 
     public override void _Process(double deltaT)

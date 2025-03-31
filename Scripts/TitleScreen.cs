@@ -10,16 +10,12 @@ public partial class TitleScreen : Control
         var localPlayButton = GetNode<Button>("LocalPlay");
         localPlayButton.Pressed += () =>
         {
-            // This could be fewer steps if we add a preload script to hold context.
-            // For now, we pass the player color in manually.
+            // Update PlayerSettings
             var color = GetNode<ColorPickerButton>("PlayerColor").Color;
-            var game = _gameScene.Instantiate();
-            var worm = game.FindChild("Worm") as Worm;
-            worm.PlayerColor = color;
-            var tree = GetTree();
-            var root = tree.GetRoot();
-            root.AddChild(game);
-            root.RemoveChild(tree.GetCurrentScene());
+            PlayerSettings.Instance.WormColor = color;
+
+            // Replace title screen with game screen
+            GetTree().ChangeSceneToPacked(_gameScene);
         };
     }
 }

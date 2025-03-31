@@ -18,22 +18,10 @@ public partial class Worm : CharacterBody2D
     [Export] public PackedScene BulletScene;
     [Export] public float ShootSpeed = 1500.0f;
 
-    private Color _playerColor;
-
-    [Export]
-    public Color PlayerColor
-    {
-        get => _playerColor;
-        set
-        {
-            _playerColor = value;
-            BodySprite.Modulate = PlayerColor;
-        }
-    }
-
     public override void _Ready()
     {
         _reticleDist = ReticleSprite.Position.Length();
+        BodySprite.Modulate = PlayerSettings.Instance.WormColor;
     }
 
     public override void _Process(double deltaT)
@@ -91,7 +79,13 @@ public partial class Worm : CharacterBody2D
             var bullet = BulletScene.Instantiate<RigidBody2D>();
             bullet.Position = Position;
             bullet.LinearVelocity = ShootSpeed * AimingDir();
-            GetTree().Root.AddChild(bullet);
+            GetTree().CurrentScene.AddChild(bullet);
+        }
+
+        if (Input.IsActionJustPressed("menu"))
+        {
+            // GetTree().Root.RemoveChild(GetTree().CurrentScene);
+            GetTree().ChangeSceneToFile("res://Scenes/title_screen.tscn");
         }
     }
 

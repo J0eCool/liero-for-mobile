@@ -2,3 +2,6 @@
 .godot/
 .idea/
 /android/
+
+# Rider user-specific settings
+*.sln.DotSettings.user

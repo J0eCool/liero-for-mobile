@@ -1,8 +1,19 @@
+using System;
 using Godot;
 
 public partial class Worm : CharacterBody2D
 {
+    // Constants
+    private const int AimAngleLowerBound = 60;  // OpenLieroX/src/common/CWormHuman.cpp:522 
+    private const int AimAngleUpperBound = -90;
+    private const float AimFrictionCoefficient = 300.0f;
+
+    private const float AimAccelConst = 5.0f;  // Not sure if exact match for OG liero
+    private const float AimMaxSpeed = 200.0f;  // Slightly slower than OG Liero, could use some tweaking
+    
+    // Movement/positioning state vars
     private bool _facingRight = true;
+    private float _aimAngleSpeed = 0.0f; 
     private float _aimAngle = 0.0f;
     private float _reticleDist;
 
@@ -11,7 +22,8 @@ public partial class Worm : CharacterBody2D
     [Export] public Sprite2D ReticleSprite;
 
     [Export] public float MoveSpeed = 100.0f;
-    [Export] public float AimSpeed = 250.0f; // in degrees/s
+    [Export] public float AimAccel = 100.0f; // in degrees/s
+    // [Export] public float AimSpeed = 250.0f; // in degrees/s
     [Export] public float Gravity = 500.0f;
     [Export] public float JumpHeight = 250.0f;
 
@@ -26,7 +38,7 @@ public partial class Worm : CharacterBody2D
     public override void _Process(double deltaT)
     {
         // Time init
-        var dt = (float)deltaT;
+        var dt = (float)deltaT;  // Frame time in seconds
 
         // Movement processing
         // Local copy of velocity - set base.Velocity at end
@@ -63,12 +75,19 @@ public partial class Worm : CharacterBody2D
         BodySprite.FlipH = !_facingRight;
         GunSprite.FlipH = !_facingRight;
 
-        // Handle V input
-        var dAim = Input.GetAxis("up", "down");
-        _aimAngle += dt * dAim * AimSpeed;
-        _aimAngle = Mathf.Clamp(_aimAngle, -90, 45);
+        // Handle V input (aiming up or down)
+        CalculateAimAngleSpeed(dt);
+
+
+        _aimAngle += _aimAngleSpeed * dt;
+        
+        if(AimAngleClamped())
+        {
+            // If position is at a limit, speed goes to 0
+            _aimAngleSpeed = 0;
+        }
+        
         ReticleSprite.Position = _reticleDist * AimingDir();
-        ;
 
         // Ship it!!!!
         Velocity = vel;
@@ -83,10 +102,63 @@ public partial class Worm : CharacterBody2D
         }
     }
 
+    private void CalculateAimAngleSpeed(float dt)
+    {
+        // Aim direction constant multiplier
+        var dAim = Input.GetAxis("up", "down");  // -1 : up, 1 : down, 0 : nothing
+        
+        if (dAim != 0.0)
+        {
+            // Up or down is pressed/held
+            _aimAngleSpeed += AimAccel * dAim * dt * AimAccelConst;
+            _aimAngleSpeed = Mathf.Clamp(_aimAngleSpeed, -AimMaxSpeed, AimMaxSpeed);
+        }
+        else if(_aimAngleSpeed != 0)
+        {
+            // Decelerate to 0 if no input
+            _aimAngleSpeed = ReduceByConstantAmount(_aimAngleSpeed, AimFrictionCoefficient*dt);
+            
+            // Set to 0 if sufficiently low
+            if(Math.Abs(_aimAngleSpeed) < 5.0f && _aimAngleSpeed != 0.0f)
+            {
+                _aimAngleSpeed = 0.0f;
+            }
+        }
+    }
+
+    float ReduceByConstantAmount(float input, float amount)
+    {
+        if (input > 0.0)
+        {
+            var reduction = input - (amount);
+            input = Math.Max(0, reduction);
+        }
+        else if (input < 0.0)
+        {
+            var reduction = input + (amount);
+            input = Math.Min(0, reduction);
+        }
+
+        return input;
+    }
+    
     private Vector2 AimingDir()
     {
         var ret = Vector2.FromAngle(_aimAngle * Mathf.Pi / 180);
         if (!_facingRight) ret.X *= -1;
         return ret;
     }
+    
+    private bool AimAngleClamped()
+    {
+        float originalAngle = _aimAngle;
+        _aimAngle = Mathf.Clamp(_aimAngle, AimAngleUpperBound, AimAngleLowerBound);
+        if (originalAngle > AimAngleLowerBound || originalAngle < AimAngleUpperBound)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
 }

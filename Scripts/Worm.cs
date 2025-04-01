@@ -4,25 +4,27 @@ using Godot;
 public partial class Worm : CharacterBody2D
 {
     // Constants
-    private const int AimAngleLowerBound = 60;  // OpenLieroX/src/common/CWormHuman.cpp:522 
+    private const int AimAngleLowerBound = 60; // OpenLieroX/src/common/CWormHuman.cpp:522 
     private const int AimAngleUpperBound = -90;
     private const float AimFrictionCoefficient = 300.0f;
 
-    private const float AimAccelConst = 5.0f;  // Not sure if exact match for OG liero
-    private const float AimMaxSpeed = 200.0f;  // Slightly slower than OG Liero, could use some tweaking
-    
+    private const float AimAccelConst = 5.0f; // Not sure if exact match for OG liero
+    private const float AimMaxSpeed = 200.0f; // Slightly slower than OG Liero, could use some tweaking
+
     // Movement/positioning state vars
     private bool _facingRight = true;
-    private float _aimAngleSpeed = 0.0f; 
+    private float _aimAngleSpeed = 0.0f;
     private float _aimAngle = 0.0f;
-    private float _reticleDist;
+    private float _reticleDist = 0.0f;
 
     [Export] public Sprite2D BodySprite;
     [Export] public Sprite2D GunSprite;
     [Export] public Sprite2D ReticleSprite;
 
     [Export] public float MoveSpeed = 100.0f;
+
     [Export] public float AimAccel = 100.0f; // in degrees/s
+
     // [Export] public float AimSpeed = 250.0f; // in degrees/s
     [Export] public float Gravity = 500.0f;
     [Export] public float JumpHeight = 250.0f;
@@ -30,16 +32,22 @@ public partial class Worm : CharacterBody2D
     [Export] public PackedScene BulletScene;
     [Export] public float ShootSpeed = 1500.0f;
 
+    [Export] public bool IsServerPlayer = false;
+
     public override void _Ready()
     {
+        if (!IsPlayerControlled()) return;
+
         _reticleDist = ReticleSprite.Position.Length();
         BodySprite.Modulate = PlayerSettings.Instance.WormColor;
     }
 
     public override void _Process(double deltaT)
     {
+        if (!IsPlayerControlled()) return;
+
         // Time init
-        var dt = (float)deltaT;  // Frame time in seconds
+        var dt = (float)deltaT; // Frame time in seconds
 
         // Movement processing
         // Local copy of velocity - set base.Velocity at end
@@ -79,15 +87,14 @@ public partial class Worm : CharacterBody2D
         // Handle V input (aiming up or down)
         CalculateAimAngleSpeed(dt);
 
-
         _aimAngle += _aimAngleSpeed * dt;
-        
-        if(AimAngleClamped())
+
+        if (AimAngleClamped())
         {
             // If position is at a limit, speed goes to 0
             _aimAngleSpeed = 0;
         }
-        
+
         ReticleSprite.Position = _reticleDist * AimingDir();
 
         // Ship it!!!!
@@ -112,21 +119,21 @@ public partial class Worm : CharacterBody2D
     private void CalculateAimAngleSpeed(float dt)
     {
         // Aim direction constant multiplier
-        var dAim = Input.GetAxis("up", "down");  // -1 : up, 1 : down, 0 : nothing
-        
+        var dAim = Input.GetAxis("up", "down"); // -1 : up, 1 : down, 0 : nothing
+
         if (dAim != 0.0)
         {
             // Up or down is pressed/held
             _aimAngleSpeed += AimAccel * dAim * dt * AimAccelConst;
             _aimAngleSpeed = Mathf.Clamp(_aimAngleSpeed, -AimMaxSpeed, AimMaxSpeed);
         }
-        else if(_aimAngleSpeed != 0)
+        else if (_aimAngleSpeed != 0)
         {
             // Decelerate to 0 if no input
-            _aimAngleSpeed = ReduceByConstantAmount(_aimAngleSpeed, AimFrictionCoefficient*dt);
-            
+            _aimAngleSpeed = ReduceByConstantAmount(_aimAngleSpeed, AimFrictionCoefficient * dt);
+
             // Set to 0 if sufficiently low
-            if(Math.Abs(_aimAngleSpeed) < 5.0f && _aimAngleSpeed != 0.0f)
+            if (Math.Abs(_aimAngleSpeed) < 5.0f && _aimAngleSpeed != 0.0f)
             {
                 _aimAngleSpeed = 0.0f;
             }
@@ -148,14 +155,15 @@ public partial class Worm : CharacterBody2D
 
         return input;
     }
-    
+
     private Vector2 AimingDir()
     {
         var ret = Vector2.FromAngle(_aimAngle * Mathf.Pi / 180);
         if (!_facingRight) ret.X *= -1;
         return ret;
     }
-    
+
+    // Tries to clamp the _aimAngle between its bounds, returns true iff original value was OOB 
     private bool AimAngleClamped()
     {
         float originalAngle = _aimAngle;
@@ -167,5 +175,11 @@ public partial class Worm : CharacterBody2D
 
         return false;
     }
-    
+
+    // True iff this specific worm is our player character
+    private bool IsPlayerControlled()
+    {
+        // Testing whether we *think* we're the server player; no need to check Multiplayer.IsServer()
+        return IsServerPlayer == PlayerSettings.Instance.IsServerPlayer;
+    }
 }

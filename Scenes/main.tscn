@@ -6,8 +6,13 @@
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Worm" parent="." instance=ExtResource("1_ig7tw")]
-position = Vector2(572, 486)
+[node name="Worm1" parent="." instance=ExtResource("1_ig7tw")]
+position = Vector2(596, 527)
+MoveSpeed = 255.0
+IsServerPlayer = true
+
+[node name="Worm2" parent="." instance=ExtResource("1_ig7tw")]
+position = Vector2(172, 442)
 MoveSpeed = 255.0
 
 [node name="Level Geometry" type="Node2D" parent="."]

@@ -16,7 +16,6 @@ script = ExtResource("1_affe2")
 BodySprite = NodePath("Body")
 GunSprite = NodePath("Gun")
 ReticleSprite = NodePath("Reticle")
-Gravity = 1800.0
 JumpHeight = 180.0
 BulletScene = ExtResource("2_jxdlp")
 

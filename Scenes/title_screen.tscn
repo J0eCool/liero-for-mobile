@@ -19,7 +19,7 @@ outline_color = Color(0, 0, 0, 1)
 outline_size = 3
 outline_color = Color(0, 0, 0, 1)
 
-[node name="Title Screen" type="Control"]
+[node name="Title Screen" type="Control" node_paths=PackedStringArray("_localPlayButton", "_serverPlayButton", "_clientPlayButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,6 +27,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_v6p8y")
+_localPlayButton = NodePath("LocalPlay")
+_serverPlayButton = NodePath("ServerPlay")
+_clientPlayButton = NodePath("ClientPlay")
 _gameScene = ExtResource("2_ak2if")
 
 [node name="Title" type="Label" parent="."]
@@ -66,3 +69,17 @@ offset_top = 367.0
 offset_right = 573.0
 offset_bottom = 413.0
 text = "Local Play"
+
+[node name="ServerPlay" type="Button" parent="."]
+offset_left = 381.0
+offset_top = 433.0
+offset_right = 500.0
+offset_bottom = 479.0
+text = "Start Server"
+
+[node name="ClientPlay" type="Button" parent="."]
+offset_left = 533.0
+offset_top = 433.0
+offset_right = 652.0
+offset_bottom = 479.0
+text = "Start Client"

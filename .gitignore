@@ -5,3 +5,6 @@
 
 # Rider user-specific settings
 *.sln.DotSettings.user
+
+# Obsidian user-specific settings
+.obsidian/workspace.json
